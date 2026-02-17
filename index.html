@@ -196,9 +196,9 @@
         }
         
         .black { background: #1a1a1a; }
-        .gray { background: #8a8a8a; }
         .silver { background: #c0c0c0; }
-        .green { background: #2e5c3d; }
+        .ice-blue { background: #87ceeb; }
+        .mint { background: #98fb98; }
         
         .info {
             position: absolute;
@@ -644,15 +644,15 @@
                 <p>AR not supported on this device. Enjoy the interactive 3D preview instead!</p>
             </div>
             
-            <!-- Model Viewer -->
+            <!-- Model Viewer - Samsung Galaxy S25 -->
             <model-viewer 
                 id="viewer"
                 src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
                 ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
-                alt="Samsung Galaxy S26 Ultra"
+                alt="Samsung Galaxy S25"
                 ar 
                 ar-modes="webxr scene-viewer quick-look"
-                camera-orbit="45deg 55deg 2.5m"
+                camera-orbit="-20deg 55deg 0.8m"
                 field-of-view="30deg"
                 auto-rotate
                 auto-rotate-delay="5000"
@@ -660,7 +660,9 @@
                 touch-action="pan-y"
                 shadow-intensity="1"
                 exposure="1"
-                loading="eager">
+                loading="eager"
+                ar-hand-tracking="true"
+                interaction-prompt="Hold S25 in your hand">
                 
                 <button class="ar-btn" slot="ar-button" type="button" aria-label="Try in AR">
                     <i class="fas fa-camera"></i>
@@ -677,19 +679,19 @@
             <!-- Color Selector -->
             <div class="colors">
                 <div class="color black active" onclick="changeColor(0)" title="Phantom Black"></div>
-                <div class="color gray" onclick="changeColor(1)" title="Gray"></div>
-                <div class="color silver" onclick="changeColor(2)" title="Silver"></div>
-                <div class="color green" onclick="changeColor(3)" title="Green"></div>
+                <div class="color silver" onclick="changeColor(1)" title="Silver Shadow"></div>
+                <div class="color ice-blue" onclick="changeColor(2)" title="Ice Blue"></div>
+                <div class="color mint" onclick="changeColor(3)" title="Mint"></div>
             </div>
             
             <!-- Product Info -->
             <div class="info">
-                <h1 class="title">Samsung Galaxy S26 Ultra</h1>
-                <p class="subtitle">256GB | 12GB RAM | 5G</p>
+                <h1 class="title">Samsung Galaxy S25</h1>
+                <p class="subtitle">12GB RAM | 256GB | Snapdragon 8 Elite</p>
                 <div class="price">
-                    ₹1,09,999
-                    <span class="old-price">₹1,29,999</span>
-                    <span class="discount">15% OFF</span>
+                    ₹79,999
+                    <span class="old-price">₹89,999</span>
+                    <span class="discount">11% OFF</span>
                 </div>
                 <button class="buy" type="button" onclick="openFlipkart()" aria-label="Buy on Flipkart">
                     <i class="fas fa-shopping-cart"></i>
@@ -803,15 +805,15 @@
     <script>
         // Product Configuration
         var productConfig = {
-            name: 'Samsung Galaxy S26 Ultra',
+            name: 'Samsung Galaxy S25',
             colors: [
                 {id: 'phantom-black', name: 'Phantom Black', hex: '#1a1a1a', hue: 0},
-                {id: 'gray', name: 'Gray', hex: '#8a8a8a', hue: 0},
-                {id: 'silver', name: 'Silver', hex: '#c0c0c0', hue: 0},
-                {id: 'green', name: 'Green', hex: '#2e5c3d', hue: 100}
+                {id: 'silver-shadow', name: 'Silver Shadow', hex: '#c0c0c0', hue: 0},
+                {id: 'ice-blue', name: 'Ice Blue', hex: '#87ceeb', hue: 180},
+                {id: 'mint', name: 'Mint', hex: '#98fb98', hue: 120}
             ],
             currentColorIndex: 0,
-            flipkartBaseUrl: 'https://www.flipkart.com/search?q=samsung+galaxy+s26+ultra'
+            flipkartBaseUrl: 'https://www.flipkart.com/search?q=samsung+galaxy+s25'
         };
         
         // DOM Elements
@@ -1075,7 +1077,7 @@
         // Share Product
         async function shareProduct() {
             var shareData = {
-                title: 'Samsung Galaxy S26 Ultra - AR Try-On',
+                title: 'Samsung Galaxy S25 - AR Try-On',
                 text: 'Try before you buy with AR!',
                 url: window.location.href
             };
