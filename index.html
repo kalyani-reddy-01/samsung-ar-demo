@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Samsung Galaxy S26 Ultra - AR Try-On</title>
+    <meta name="description" content="Try Samsung Galaxy S26 Ultra in AR before you buy">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+        
+        var sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        
+        function trackEvent(eventName, params) {
+            params = params || {};
+            params.session_id = sessionId;
+            params.timestamp = new Date().toISOString();
+            try {
+                gtag('event', eventName, params);
+            } catch(e) {
+                console.log('GA4:', eventName, params);
+            }
+        }
+        
+        trackEvent('page_view', {page: 'ar_product_page'});
+    </script>
+    
+    <style>
+        :root {
+            --primary-green: #00C853;
+            --primary-green-dark: #009624;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b0;
+            --error-red: #ff5252;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+        
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--primary-green);
+            margin-right: 0.5rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .icon-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+        
+        .icon-btn:active {
+            background: rgba(255,255,255,0.2);
+            transform: scale(0.95);
+        }
+        
+        .viewer {
+            flex: 1;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            --poster-color: transparent;
+        }
+        
+        .ar-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            position: absolute;
+            bottom: 10rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            box-shadow: 0 8px 32px rgba(0,200,83,0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-family: inherit;
+        }
+        
+        .ar-btn:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+        
+        .colors {
+            position: absolute;
+            bottom: 13rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.8);
+            border-radius: 50px;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+        }
+        
+        .color {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .color.active {
+            border-color: var(--primary-green);
+            transform: scale(1.1);
+        }
+        
+        .color:active {
+            transform: scale(0.95);
+        }
+        
+        .black { background: #1a1a1a; }
+        .gray { background: #8a8a8a; }
+        .silver { background: #c0c0c0; }
+        .green { background: #2e5c3d; }
+        
+        .info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            padding: 6rem 1.5rem 1.5rem;
+            z-index: 40;
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price {
+            font-size: 2rem;
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .old-price {
+            font-size: 1.2rem;
+            color: #888;
+            text-decoration: line-through;
+        }
+        
+        .discount {
+            background: var(--primary-green);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .buy {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,200,83,0.3);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0,200,83,0.5);
+        }
+        
+        .buy:active {
+            transform: scale(0.98);
+        }
+        
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 100;
+            transition: opacity 0.5s;
+        }
+        
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(0,200,83,0.2);
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 60;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .fallback.active {
+            display: flex;
+        }
+        
+        .phone-mock {
+            width: 12rem;
+            height: 24rem;
+            background: linear-gradient(135deg, #333, #111);
+            border-radius: 2rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        
+        .phone-mock::before {
+            content: '';
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 1.5rem;
+            background: #000;
+            border-radius: 0 0 1rem 1rem;
+        }
+        
+        .phone-mock i {
+            font-size: 3rem;
+            color: var(--primary-green);
+        }
+        
+        .fallback p {
+            color: #888;
+            font-size: 0.9rem;
+            max-width: 280px;
+        }
+        
+        .swipe-indicator {
+            position: absolute;
+            bottom: 16rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 50;
+            opacity: 0.7;
+        }
+        
+        /* Specifications Popup */
+        .specs-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .specs-popup.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .specs-content {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 1.5rem;
+        }
+        
+        .specs-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .specs-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .specs-title i {
+            color: var(--primary-green);
+        }
+        
+        .specs-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.5rem;
+        }
+        
+        .spec-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0,200,83,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+        }
+        
+        .spec-details {
+            flex: 1;
+        }
+        
+        .spec-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.2rem;
+        }
+        
+        .spec-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Flipkart Modal */
+        .flipkart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .flipkart-modal.active {
+            display: flex;
+        }
+        
+        .flipkart-container {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            background: #fff;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flipkart-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #2874f0;
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .flipkart-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--card-bg);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 300;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--primary-green);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--error-red);
+        }
+        
+        .notification i.success {
+            color: var(--primary-green);
+        }
+        
+        .notification i.error {
+            color: var(--error-red);
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 480px) {
+            .ar-btn {
+                padding: 0.8rem 1.5rem;
+                bottom: 9rem;
+                font-size: 1rem;
+            }
+            
+            .colors {
+                bottom: 12rem;
+                gap: 0.75rem;
+            }
+            
+            .color {
+                width: 2rem;
+                height: 2rem;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .price {
+                font-size: 1.5rem;
+            }
+            
+            .swipe-indicator {
+                bottom: 15rem;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo">
+                <i class="fas fa-mobile-alt"></i>
+                AR Tech
+            </a>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="showSpecs()" title="Specifications">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+                <button class="icon-btn" onclick="shareProduct()" title="Share">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div class="viewer">
+            <!-- Loading Screen -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading AR Experience...</div>
+            </div>
+            
+            <!-- AR Fallback -->
+            <div class="fallback" id="fallback">
+                <div class="phone-mock">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <p>AR not supported on this device. Enjoy the interactive 3D preview instead!</p>
+            </div>
+            
+            <!-- Model Viewer -->
+            <model-viewer 
+                id="viewer"
+                src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+                alt="Samsung Galaxy S26 Ultra"
+                ar 
+                ar-modes="webxr scene-viewer quick-look"
+                camera-orbit="45deg 55deg 2.5m"
+                field-of-view="30deg"
+                auto-rotate
+                auto-rotate-delay="5000"
+                camera-controls
+                touch-action="pan-y"
+                shadow-intensity="1"
+                exposure="1"
+                loading="eager">
+                
+                <button class="ar-btn" slot="ar-button" type="button" aria-label="Try in AR">
+                    <i class="fas fa-camera"></i>
+                    TRY IN AR
+                </button>
+            </model-viewer>
+            
+            <!-- Swipe Indicator -->
+            <div class="swipe-indicator">
+                <i class="fas fa-arrows-left-right"></i>
+                Swipe to change color
+            </div>
+            
+            <!-- Color Selector -->
+            <div class="colors">
+                <div class="color black active" onclick="changeColor(0)" title="Phantom Black"></div>
+                <div class="color gray" onclick="changeColor(1)" title="Gray"></div>
+                <div class="color silver" onclick="changeColor(2)" title="Silver"></div>
+                <div class="color green" onclick="changeColor(3)" title="Green"></div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="info">
+                <h1 class="title">Samsung Galaxy S26 Ultra</h1>
+                <p class="subtitle">256GB | 12GB RAM | 5G</p>
+                <div class="price">
+                    ₹1,09,999
+                    <span class="old-price">₹1,29,999</span>
+                    <span class="discount">15% OFF</span>
+                </div>
+                <button class="buy" type="button" onclick="openFlipkart()" aria-label="Buy on Flipkart">
+                    <i class="fas fa-shopping-cart"></i>
+                    BUY NOW ON FLIPKART
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Specifications Popup -->
+    <div class="specs-popup" id="specsPopup" onclick="closeSpecsOutside(event)">
+        <div class="specs-content">
+            <button class="specs-close" onclick="closeSpecs()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="specs-title">
+                <i class="fas fa-mobile-alt"></i>
+                Specifications
+            </h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-tablet-alt"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Display</div>
+                        <div class="spec-value">6.8" Dynamic AMOLED 2X</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-camera"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Main Camera</div>
+                        <div class="spec-value">200MP + 50MP + 12MP + 10MP</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-user"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Front Camera</div>
+                        <div class="spec-value">32MP Wide Angle</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-microchip"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Processor</div>
+                        <div class="spec-value">Snapdragon 8 Elite</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-memory"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">RAM</div>
+                        <div class="spec-value">12GB / 16GB LPDDR5X</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-hdd"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Storage</div>
+                        <div class="spec-value">256GB / 512GB / 1TB</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-battery-full"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Battery</div>
+                        <div class="spec-value">5000mAh | 45W Fast Charging</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-fingerprint"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Security</div>
+                        <div class="spec-value">Ultrasonic Fingerprint</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-tint"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Water Resistance</div>
+                        <div class="spec-value">IP68 Rated</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-wifi"></i></div>
+                    <div class="spec-details">
+                        <div class="spec-label">Connectivity</div>
+                        <div class="spec-value">5G | WiFi 7 | Bluetooth 5.4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flipkart Modal -->
+    <div class="flipkart-modal" id="flipkartModal">
+        <div class="flipkart-container">
+            <button class="flipkart-close" onclick="closeFlipkart()">
+                <i class="fas fa-times"></i>
+            </button>
+            <iframe class="flipkart-iframe" id="flipkartIframe" src="about:blank" title="Flipkart" loading="lazy"></iframe>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationText">Notification</span>
+    </div>
+    
+    <script>
+        // Product Configuration
+        var productConfig = {
+            name: 'Samsung Galaxy S26 Ultra',
+            colors: [
+                {id: 'phantom-black', name: 'Phantom Black', hex: '#1a1a1a', hue: 0},
+                {id: 'gray', name: 'Gray', hex: '#8a8a8a', hue: 0},
+                {id: 'silver', name: 'Silver', hex: '#c0c0c0', hue: 0},
+                {id: 'green', name: 'Green', hex: '#2e5c3d', hue: 100}
+            ],
+            currentColorIndex: 0,
+            flipkartBaseUrl: 'https://www.flipkart.com/search?q=samsung+galaxy+s26+ultra'
+        };
+        
+        // DOM Elements
+        var viewer = document.getElementById('viewer');
+        var loading = document.getElementById('loading');
+        var fallback = document.getElementById('fallback');
+        var specsPopup = document.getElementById('specsPopup');
+        var flipkartModal = document.getElementById('flipkartModal');
+        var flipkartIframe = document.getElementById('flipkartIframe');
+        var notification = document.getElementById('notification');
+        var notificationText = document.getElementById('notificationText');
+        
+        var modelLoadError = false;
+        var arNotSupported = false;
+        
+        // Initialize on DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initModelViewer();
+            setupSwipeGesture();
+            setupKeyboardShortcuts();
+            
+            // Network status listeners
+            window.addEventListener('online', function() {
+                showNotification('Back online!', 'success');
+            });
+            
+            window.addEventListener('offline', function() {
+                showNotification('You are offline.', 'error');
+            });
+        });
+        
+        // Initialize Model Viewer
+        function initModelViewer() {
+            if (!viewer) return;
+            
+            viewer.addEventListener('load', function() {
+                setTimeout(function() {
+                    if (loading) {
+                        loading.classList.add('hidden');
+                    }
+                    try {
+                        trackEvent('model_loaded', {event_category: 'engagement'});
+                    } catch(e) {}
+                }, 800);
+            });
+            
+            viewer.addEventListener('error', function(evt) {
+                modelLoadError = true;
+                if (fallback) fallback.classList.add('active');
+                if (loading) loading.classList.add('hidden');
+                try {
+                    trackEvent('model_error', {
+                        event_category: 'error',
+                        message: evt && evt.detail ? JSON.stringify(evt.detail) : 'unknown'
+                    });
+                } catch(e) {}
+            });
+            
+            viewer.addEventListener('ar-status', function(event) {
+                try {
+                    var detail = event && event.detail;
+                    var status = (typeof detail === 'string') ? detail : (detail && (detail.status || detail.sessionStatus || detail));
+                    
+                    if (status === 'session-started') {
+                        trackEvent('ar_session_start', {event_category: 'ar'});
+                    }
+                    
+                    if (typeof status === 'string' && (status.includes('failed') || status === 'not-presenting')) {
+                        arNotSupported = true;
+                        if (fallback) fallback.classList.add('active');
+                        trackEvent('ar_failed', {event_category: 'ar', status: status});
+                    }
+                } catch(e) {}
+            });
+            
+            viewer.addEventListener('ar-session-start', function() {
+                try {
+                    trackEvent('ar_enter', {
+                        event_category: 'ar',
+                        color: productConfig.colors[productConfig.currentColorIndex].name
+                    });
+                } catch(e) {}
+            });
+            
+            viewer.addEventListener('ar-session-end', function() {
+                try {
+                    trackEvent('ar_exit', {event_category: 'ar'});
+                } catch(e) {}
+            });
+            
+            // AR Detection
+            detectARSupport();
+        }
+        
+        // Detect AR Support
+        function detectARSupport() {
+            try {
+                var isIOS = /iP(hone|od|ad)/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+                
+                if (isIOS) return;
+                
+                if (navigator.xr && navigator.xr.isSessionSupported) {
+                    navigator.xr.isSessionSupported('immersive-ar').then(function(supported) {
+                        if (!supported && fallback) fallback.classList.add('active');
+                    }).catch(function() {
+                        if (fallback) fallback.classList.add('active');
+                    });
+                } else {
+                    if (fallback) fallback.classList.add('active');
+                }
+            } catch(e) {
+                if (fallback) fallback.classList.add('active');
+            }
+        }
+        
+        // Change Color
+        function changeColor(index) {
+            if (index === productConfig.currentColorIndex) return;
+            
+            var previousColor = productConfig.colors[productConfig.currentColorIndex].name;
+            productConfig.currentColorIndex = index;
+            var newColor = productConfig.colors[index].name;
+            
+            // Update UI
+            document.querySelectorAll('.color').forEach(function(el, i) {
+                el.classList.toggle('active', i === index);
+            });
+            
+            // Update model color filter
+            updateModelColor(productConfig.colors[index]);
+            
+            // Track event
+            try {
+                trackEvent('color_change', {
+                    event_category: 'engagement',
+                    color_index: index,
+                    color_name: newColor,
+                    previous_color: previousColor
+                });
+            } catch(e) {}
+            
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+        
+        // Update Model Color
+        function updateModelColor(colorObj) {
+            if (!viewer) return;
+            viewer.style.filter = 'sepia(30%) saturate(150%) hue-rotate(' + colorObj.hue + 'deg)';
+        }
+        
+        // Swipe Gesture
+        function setupSwipeGesture() {
+            var touchStartX = 0;
+            var touchEndX = 0;
+            var minSwipeDistance = 50;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                var swipeDistance = touchEndX - touchStartX;
+                
+                if (Math.abs(swipeDistance) > minSwipeDistance) {
+                    if (swipeDistance > 0) {
+                        // Swipe right - previous color
+                        var newIndex = productConfig.currentColorIndex > 0 
+                            ? productConfig.currentColorIndex - 1 
+                            : productConfig.colors.length - 1;
+                        changeColor(newIndex);
+                    } else {
+                        // Swipe left - next color
+                        var newIndex = (productConfig.currentColorIndex + 1) % productConfig.colors.length;
+                        changeColor(newIndex);
+                    }
+                }
+            }, {passive: true});
+        }
+        
+        // Keyboard Shortcuts
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSpecs();
+                    closeFlipkart();
+                }
+                if (e.key === 'ArrowLeft') {
+                    var newIndex = productConfig.currentColorIndex > 0 
+                        ? productConfig.currentColorIndex - 1 
+                        : productConfig.colors.length - 1;
+                    changeColor(newIndex);
+                }
+                if (e.key === 'ArrowRight') {
+                    var newIndex = (productConfig.currentColorIndex + 1) % productConfig.colors.length;
+                    changeColor(newIndex);
+                }
+            });
+        }
+        
+        // Show Specifications
+        function showSpecs() {
+            specsPopup.classList.add('active');
+            try {
+                trackEvent('specs_view', {event_category: 'engagement'});
+            } catch(e) {}
+        }
+        
+        // Close Specifications
+        function closeSpecs() {
+            specsPopup.classList.remove('active');
+        }
+        
+        // Close Specifications Outside Click
+        function closeSpecsOutside(event) {
+            if (event.target === specsPopup) {
+                closeSpecs();
+            }
+        }
+        
+        // Open Flipkart
+        function openFlipkart() {
+            var url = productConfig.flipkartBaseUrl;
+            flipkartIframe.src = url;
+            flipkartModal.classList.add('active');
+            try {
+                trackEvent('buy_click', {
+                    event_category: 'conversion',
+                    color: productConfig.colors[productConfig.currentColorIndex].name
+                });
+            } catch(e) {}
+        }
+        
+        // Close Flipkart
+        function closeFlipkart() {
+            flipkartModal.classList.remove('active');
+            flipkartIframe.src = 'about:blank';
+        }
+        
+        // Show Notification
+        function showNotification(message, type) {
+            var notificationEl = document.getElementById('notification');
+            var notificationTextEl = document.getElementById('notificationText');
+            
+            notificationEl.className = 'notification ' + type;
+            notificationTextEl.textContent = message;
+            
+            var icon = notificationEl.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-info-circle ' + type;
+            }
+            
+            notificationEl.classList.add('show');
+            
+            setTimeout(function() {
+                notificationEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Share Product
+        async function shareProduct() {
+            var shareData = {
+                title: 'Samsung Galaxy S26 Ultra - AR Try-On',
+                text: 'Try before you buy with AR!',
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    trackEvent('share', {event_category: 'engagement', event_label: 'Shared'});
+                } catch(err) {
+                    console.log('Share cancelled');
+                }
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(function() {
+                    showNotification('Link copied!', 'success');
+                    trackEvent('share', {event_category: 'engagement', event_label: 'Link Copied'});
+                }).catch(function() {
+                    showNotification('Failed to copy link', 'error');
+                });
+            }
+        }
+        
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            try {
+                trackEvent('javascript_error', {event_category: 'error', message: e.message});
+            } catch(err) {}
+            console.error('AR Widget Error:', e.message);
+        });
+    </script>
+</body>
+</html>
