@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samsung Galaxy S25 Ultra AR Try-On</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Improved Phone Mockup</title>
+    <style>
+        /* Custom CSS Styling for 3D phone mockup */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: linear-gradient(to bottom, #ffffff, #eaeaea);
+            border-radius: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            position: relative;
+            perspective: 1000px;
+        }
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            background-color: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        /* Add more CSS for loaders, touch interactions etc. */
+    </style>
 </head>
 <body>
-    <div class="ar-try-on-widget">
-        <h1>Try the Samsung Galaxy S25 Ultra</h1>
-        <div class="phone-mockup">
-            <img src="s25-ultra-mockup.png" alt="Samsung Galaxy S25 Ultra Mockup">
-        </div>
-        <div class="ar-viewer">
-            <model-viewer src="s25-ultra-ar-model.glb" alt="Samsung Galaxy S25 Ultra" auto-rotate camera-controls></model-viewer>
-        </div>
-        <div class="color-selector">
-            <label for="color">Choose a color:</label>
-            <select id="color" name="color">
-                <option value="black">Black</option>
-                <option value="white">White</option>
-                <option value="blue">Blue</option>
-                <option value="red">Red</option>
-            </select>
-        </div>
-        <div class="specifications-popup">
-            <button id="specs-button">View Specifications</button>
-            <div id="specs-content" class="popup-content">
-                <p>Specifications of Samsung Galaxy S25 Ultra...</p>
-            </div>
-        </div>
-        <div class="flipkart-integration">
-            <a href="https://www.flipkart.com/samsung-galaxy-s25-ultra">Buy on Flipkart</a>
-        </div>
+    <div class="phone-mockup">
+        <div class="screen"></div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Implement touch interaction logic and swipe functionality
+        // Loading screen implementation can go here as well
+    </script>
 </body>
 </html>
