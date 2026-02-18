@@ -1,14 +1,39 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Samsung Galaxy S25 Ultra AR Try-On Widget</title>
-    <script src="https://example.com/ar-sdk.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung Galaxy S25 Ultra AR Try-On</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Try On the Samsung Galaxy S25 Ultra</h1>
-    <div id="ar-container"></div>
-    <script>
-        // Initialize AR Widget
-        initARWidget('ar-container', 's25-ultra');
-    </script>
+    <div class="ar-try-on-widget">
+        <h1>Try the Samsung Galaxy S25 Ultra</h1>
+        <div class="phone-mockup">
+            <img src="s25-ultra-mockup.png" alt="Samsung Galaxy S25 Ultra Mockup">
+        </div>
+        <div class="ar-viewer">
+            <model-viewer src="s25-ultra-ar-model.glb" alt="Samsung Galaxy S25 Ultra" auto-rotate camera-controls></model-viewer>
+        </div>
+        <div class="color-selector">
+            <label for="color">Choose a color:</label>
+            <select id="color" name="color">
+                <option value="black">Black</option>
+                <option value="white">White</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+            </select>
+        </div>
+        <div class="specifications-popup">
+            <button id="specs-button">View Specifications</button>
+            <div id="specs-content" class="popup-content">
+                <p>Specifications of Samsung Galaxy S25 Ultra...</p>
+            </div>
+        </div>
+        <div class="flipkart-integration">
+            <a href="https://www.flipkart.com/samsung-galaxy-s25-ultra">Buy on Flipkart</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
