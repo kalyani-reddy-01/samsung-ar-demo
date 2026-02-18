@@ -4,752 +4,554 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
-    <title>Samsung Galaxy S25 Ultra - AR Experience</title>
-    
-    <!-- model-viewer CDN -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
-    
+    <title>Samsung S25 Ultra</title>
     <style>
         /* RESET */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *{margin:0;padding:0;box-sizing:border-box}
         
-        /* BODY */
-        body {
-            background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #111111 100%);
-            min-height: 100vh;
-            color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            overflow-x: hidden;
+        /* AURORA BACKGROUND */
+        body{
+            background:#000;
+            min-height:100vh;
+            color:#fff;
+            font-family:Arial,sans-serif;
+            overflow-x:hidden
         }
-
-        /* APP CONTAINER */
-        .app {
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            padding-bottom: 300px;
+        
+        .aurora{
+            position:fixed;
+            top:0;left:0;right:0;bottom:0;
+            background:radial-gradient(ellipse at 20% 20%,#00d4ff22 0%,transparent 50%),
+                       radial-gradient(ellipse at 80% 80%,#0099ff22 0%,transparent 50%),
+                       radial-gradient(ellipse at 50% 50%,#0066cc15 0%,transparent 70%),
+                       #000;
+            z-index:0
         }
-
+        
+        /* GLITTER PARTICLES */
+        .glitter{
+            position:fixed;
+            top:0;left:0;right:0;bottom:0;
+            z-index:1;
+            pointer-events:none
+        }
+        
+        .star{
+            position:absolute;
+            width:2px;height:2px;
+            background:#fff;
+            border-radius:50%;
+            animation:twinkle 2s infinite
+        }
+        
+        @keyframes twinkle{
+            0%,100%{opacity:0;transform:scale(0)}
+            50%{opacity:1;transform:scale(1)}
+        }
+        
+        /* APP */
+        .app{
+            position:relative;
+            z-index:10;
+            max-width:400px;
+            margin:0 auto;
+            padding:15px;
+            min-height:100vh
+        }
+        
         /* HEADER */
-        .header {
-            text-align: center;
-            padding: 15px;
+        .header{
+            text-align:center;
+            padding:10px 0
         }
-
-        .header h1 {
-            font-size: 1.3rem;
-            font-weight: 700;
+        
+        .header h1{
+            font-size:1.2rem;
+            font-weight:700
         }
-
-        /* MODEL VIEWER CONTAINER */
-        .model-container {
-            width: 100%;
-            height: 400px;
-            position: relative;
-            background: transparent;
+        
+        /* PHONE CONTAINER */
+        .phone-wrap{
+            display:flex;
+            justify-content:center;
+            padding:25px 0
         }
-
-        model-viewer {
-            width: 100%;
-            height: 100%;
-            --poster-color: transparent;
+        
+        /* PHONE */
+        .phone{
+            width:150px;
+            height:310px;
+            background:linear-gradient(145deg,#2a2a2a,#0a0a0a);
+            border-radius:26px;
+            position:relative;
+            box-shadow:0 12px 35px rgba(0,0,0,0.8);
+            border:2px solid #333;
+            transition:background 0.3s
         }
-
-        model-viewer::part(default-progress-bar) {
-            display: none;
+        
+        .phone.black{background:linear-gradient(145deg,#2a2a2a,#0a0a0a)}
+        .phone.white{background:linear-gradient(145deg,#d8d8d8,#a8a8a8)}
+        .phone.blue{background:linear-gradient(145deg,#4a6fa5,#2a4a75)}
+        .phone.red{background:linear-gradient(145deg,#c45c5c,#843434)}
+        
+        /* SCREEN */
+        .screen{
+            position:absolute;
+            top:6px;left:6px;right:6px;bottom:6px;
+            background:linear-gradient(180deg,#0a0a15,#151530);
+            border-radius:22px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden
         }
-
-        /* LOADING */
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
+        
+        .screen::before{
+            content:'';
+            position:absolute;
+            top:0;left:0;right:0;bottom:0;
+            background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%)
         }
-
-        .loading.hidden {
-            display: none;
+        
+        /* TIME */
+        .time{
+            font-size:1.8rem;
+            font-weight:300;
+            z-index:1
         }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #333;
-            border-top: 3px solid #00ff88;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+        
+        .date{
+            font-size:0.6rem;
+            color:rgba(255,255,255,0.6);
+            margin-top:2px;
+            z-index:1
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        /* SPECS ON SCREEN */
+        .specs{
+            margin-top:12px;
+            text-align:center;
+            z-index:1
         }
-
-        .loading-text {
-            font-size: 0.85rem;
-            color: #888;
+        
+        .specs .hl{
+            color:#00ff88;
+            font-size:0.65rem;
+            font-weight:700;
+            display:block
         }
-
-        /* AR BUTTON */
-        .ar-section {
-            padding: 15px;
-            text-align: center;
+        
+        .specs .nl{
+            color:rgba(255,255,255,0.6);
+            font-size:0.5rem;
+            display:block;
+            margin:1px 0
         }
-
-        .btn-ar {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 90%;
-            max-width: 300px;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, #00cc44, #00aa33);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 200, 100, 0.4);
+        
+        .brand{
+            position:absolute;
+            bottom:10px;
+            font-size:0.4rem;
+            color:rgba(255,255,255,0.2);
+            letter-spacing:1px
         }
-
-        .btn-ar:active {
-            transform: scale(0.96);
+        
+        /* ISLAND */
+        .island{
+            position:absolute;
+            top:8px;
+            left:50%;
+            transform:translateX(-50%);
+            width:45px;
+            height:12px;
+            background:#000;
+            border-radius:8px;
+            z-index:5
         }
-
-        /* COLOR SELECTOR */
-        .color-section {
-            padding: 15px;
-            text-align: center;
+        
+        /* CAMERA */
+        .camera{
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:35px;
+            height:35px;
+            background:#111;
+            border-radius:8px;
+            border:1px solid #222
         }
-
-        .color-title {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 12px;
+        
+        .lens{
+            position:absolute;
+            top:6px;left:6px;
+            width:10px;height:10px;
+            background:#000;
+            border-radius:50%;
+            border:1px solid #1a1a1a
         }
-
-        .color-dots {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        
+        .lens2{
+            position:absolute;
+            top:6px;left:18px;
+            width:10px;height:10px;
+            background:#000;
+            border-radius:50%;
+            border:1px solid #1a1a1a
         }
-
-        .dot {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.2s;
+        
+        /* SIDE BTNS */
+        .btn-side{
+            position:absolute;
+            right:-2px;
+            width:2px;
+            background:#333;
+            border-radius:0 2px 2px 0
         }
-
-        .dot.selected {
-            border-color: #00ff88;
-            transform: scale(1.2);
+        
+        .btn-vol{top:45px;height:20px}
+        .btn-power{top:72px;height:18px}
+        
+        /* COLOR DOTS */
+        .color-sec{
+            padding:12px 0;
+            text-align:center
         }
-
-        .dot:active {
-            transform: scale(0.9);
+        
+        .color-title{
+            font-size:0.7rem;
+            color:#666;
+            margin-bottom:8px
         }
-
-        .dot.black { background: #1a1a1a; }
-        .dot.white { background: #e0e0e0; }
-        .dot.blue { background: #3a5a8a; }
-        .dot.red { background: #a03030; }
-
-        /* SPECS CAROUSEL */
-        .carousel-section {
-            padding: 15px;
+        
+        .dots{
+            display:flex;
+            justify-content:center;
+            gap:15px
         }
-
-        .carousel-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
+        
+        .dot{
+            width:20px;height:20px;
+            border-radius:50%;
+            cursor:pointer;
+            border:2px solid transparent;
+            transition:all 0.2s
         }
-
-        .carousel {
-            display: flex;
-            transition: transform 0.3s ease;
+        
+        .dot.sel{
+            border-color:#00ff88;
+            transform:scale(1.2)
         }
-
-        .carousel.slide-0 { transform: translateX(0); }
-        .carousel.slide-1 { transform: translateX(-100%); }
-        .carousel.slide-2 { transform: translateX(-200%); }
-        .carousel.slide-3 { transform: translateX(-300%); }
-
-        .spec-slide {
-            min-width: 100%;
-            text-align: center;
-            padding: 10px;
+        
+        .dot.blk{background:#1a1a1a}
+        .dot.wht{background:#e0e0e0}
+        .dot.blu{background:#3a5a8a}
+        .dot.red{background:#a03030}
+        
+        /* BUTTONS */
+        .btns{
+            padding:12px 0;
+            display:flex;
+            flex-direction:column;
+            gap:8px
         }
-
-        .spec-highlight {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #00ff88;
-            display: block;
-            margin-bottom: 5px;
+        
+        .btn{
+            padding:13px 20px;
+            border:none;
+            border-radius:25px;
+            font-size:0.95rem;
+            font-weight:700;
+            cursor:pointer;
+            text-align:center
         }
-
-        .spec-normal {
-            font-size: 0.85rem;
-            color: #aaa;
+        
+        .btn-ar{
+            background:linear-gradient(135deg,#00cc44,#00aa33);
+            color:#fff
         }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
+        
+        .btn-buy{
+            background:linear-gradient(135deg,#e91e63,#c2185b);
+            color:#fff
         }
-
-        .carousel-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #333;
-            cursor: pointer;
+        
+        .btn:active{transform:scale(0.96)}
+        
+        /* PRICE */
+        .price-sec{
+            text-align:center;
+            padding:10px 0
         }
-
-        .carousel-dot.active {
-            background: #00ff88;
+        
+        .price{
+            font-size:1.6rem;
+            font-weight:700;
+            color:#00ff88
         }
-
-        .carousel-hint {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #555;
-            margin-top: 8px;
+        
+        .orig{
+            font-size:1rem;
+            color:#666;
+            text-decoration:line-through;
+            margin-left:6px
         }
-
-        /* VIEW BUTTONS */
-        .view-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 15px;
+        
+        .disc{
+            background:#e91e63;
+            color:#fff;
+            padding:2px 5px;
+            border-radius:4px;
+            font-size:0.65rem;
+            margin-left:4px
         }
-
-        .view-btn {
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #333;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
+        
+        /* PRODUCT */
+        .product{
+            text-align:center;
+            padding:10px 0
         }
-
-        .view-btn.active {
-            background: #00ff88;
-            color: #000;
-            border-color: #00ff88;
+        
+        .pname{
+            font-size:1.1rem;
+            font-weight:700;
+            margin-bottom:4px
         }
-
-        /* PRODUCT INFO */
-        .product-info {
-            padding: 15px;
-            text-align: center;
+        
+        /* SKELETON SHIMMER */
+        .skeleton{
+            background:#1a1a1a;
+            position:relative;
+            overflow:hidden
         }
-
-        .product-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
+        
+        .skeleton::after{
+            content:'';
+            position:absolute;
+            top:0;left:-100%;
+            width:100%;height:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+            animation:shimmer 1.5s infinite
         }
-
-        .product-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #00ff88;
+        
+        @keyframes shimmer{
+            to{left:100%}
         }
-
-        .product-original {
-            font-size: 1rem;
-            color: #666;
-            text-decoration: line-through;
-            margin-left: 8px;
+        
+        .skeleton-phone{
+            width:150px;height:310px;
+            border-radius:26px;
+            margin:25px auto
         }
-
-        .product-discount {
-            background: #e91e63;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            margin-left: 5px;
+        
+        .skeleton-dot{
+            width:20px;height:20px;
+            border-radius:50%;
+            background:#222;
+            display:inline-block;
+            margin:0 7px
         }
-
-        /* BUY BUTTON */
-        .buy-section {
-            padding: 15px;
-        }
-
-        .btn-buy {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 90%;
-            max-width: 300px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, #e91e63, #c2185b);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
-        }
-
-        .btn-buy:active {
-            transform: scale(0.98);
-        }
-
+        
         /* AR OVERLAY */
-        .ar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 9999;
+        .ar-overlay{
+            display:none;
+            position:fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:#000;
+            z-index:9999
         }
-
-        .ar-overlay.active {
-            display: flex;
+        
+        .ar-overlay.on{display:flex}
+        
+        .ar-video{
+            width:100%;height:100%;
+            object-fit:cover
         }
-
-        .ar-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        
+        .ar-close{
+            position:absolute;
+            top:20px;right:20px;
+            width:40px;height:40px;
+            background:rgba(255,255,255,0.2);
+            border:none;
+            border-radius:50%;
+            color:#fff;
+            font-size:20px;
+            cursor:pointer
         }
-
-        .ar-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
+        
+        .ar-msg{
+            position:absolute;
+            bottom:80px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(0,0,0,0.7);
+            color:#00ff88;
+            padding:10px 20px;
+            border-radius:20px;
+            font-size:0.9rem
         }
-
-        .ar-instructions {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: #00ff88;
-            padding: 15px 25px;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            text-align: center;
+        
+        /* FADE IN */
+        .fade-in{
+            animation:fadeIn 0.3s ease-out
         }
-
-        /* CSS PHONE FALLBACK */
-        .css-phone {
-            display: none;
-            width: 180px;
-            height: 370px;
-            background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
-            border-radius: 30px;
-            margin: 20px auto;
-            position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-        }
-
-        .css-phone.visible {
-            display: block;
-        }
-
-        .css-screen {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
-            background: linear-gradient(180deg, #0a0a15, #151530);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .css-time {
-            font-size: 2rem;
-            font-weight: 200;
-        }
-
-        .css-date {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .css-specs {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .css-specs .highlight {
-            color: #00ff88;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: block;
-        }
-
-        .css-specs .normal {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.55rem;
-            display: block;
+        
+        @keyframes fadeIn{
+            from{opacity:0;transform:translateY(10px)}
+            to{opacity:1;transform:translateY(0)}
         }
     </style>
 </head>
 <body>
+    <!-- BACKGROUND -->
+    <div class="aurora"></div>
+    <div class="glitter" id="glitter"></div>
+    
+    <!-- APP -->
     <div class="app">
-        <!-- Header -->
-        <div class="header">
-            <h1>Samsung Galaxy S25 Ultra</h1>
+        <!-- SKELETON LOADER -->
+        <div id="skeleton">
+            <div class="header skeleton skeleton-phone"></div>
+            <div class="phone-wrap">
+                <div class="skeleton skeleton-phone"></div>
+            </div>
+            <div class="color-sec">
+                <div class="skeleton-dot"></div>
+                <div class="skeleton-dot"></div>
+                <div class="skeleton-dot"></div>
+                <div class="skeleton-dot"></div>
+            </div>
         </div>
-
-        <!-- Model Viewer / CSS Phone -->
-        <div class="model-container">
-            <!-- Loading -->
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <div class="loading-text">Loading 3D Model...</div>
+        
+        <!-- REAL CONTENT -->
+        <div id="content" style="display:none" class="fade-in">
+            <div class="header">
+                <h1>Samsung Galaxy S25 Ultra</h1>
             </div>
             
-            <!-- Model Viewer -->
-            <model-viewer 
-                id="modelViewer"
-                src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-                alt="Samsung Galaxy S25 Ultra"
-                ar
-                ar-modes="webxr scene-viewer quick-look"
-                camera-controls
-                touch-action="pan-y"
-                auto-rotate
-                auto-rotate-delay="3000"
-                rotation-per-second="30deg"
-                camera-orbit="45deg 55deg 2.5m"
-                min-camera-orbit="auto auto auto"
-                max-camera-orbit="auto auto auto"
-                shadow-intensity="1"
-                exposure="1"
-                style="display: none;"
-                onload="onModelLoad()"
-                onerror="onModelError()">
-            </model-viewer>
-
-            <!-- CSS Phone Fallback -->
-            <div class="css-phone" id="cssPhone">
-                <div class="css-screen">
-                    <div class="css-time" id="cssTime">9:41</div>
-                    <div class="css-date" id="cssDate">Monday, Jan 15</div>
-                    <div class="css-specs">
-                        <span class="highlight">200MP Camera</span>
-                        <span class="normal">16GB RAM • Snapdragon 8 Elite</span>
-                        <span class="normal">6.9" QHD+ 120Hz AMOLED</span>
-                        <span class="normal">5000mAh 45W Fast Charge</span>
-                        <span class="normal">8K Video • IP68 • S Pen</span>
+            <div class="phone-wrap">
+                <div class="phone black" id="phone">
+                    <div class="camera">
+                        <div class="lens"></div>
+                        <div class="lens2"></div>
                     </div>
+                    <div class="island"></div>
+                    <div class="screen">
+                        <div class="time" id="time">9:41</div>
+                        <div class="date" id="date">Monday, Jan 15</div>
+                        <div class="specs">
+                            <span class="hl">200MP Camera</span>
+                            <span class="nl">16GB RAM • Snapdragon 8 Elite</span>
+                            <span class="nl">6.9" QHD+ 120Hz AMOLED</span>
+                            <span class="nl">5000mAh 45W Fast Charge</span>
+                        </div>
+                        <div class="brand">SAMSUNG</div>
+                    </div>
+                    <div class="btn-side btn-vol"></div>
+                    <div class="btn-side btn-power"></div>
                 </div>
             </div>
-        </div>
-
-        <!-- View Buttons -->
-        <div class="view-buttons">
-            <button class="view-btn active" onclick="setView('front')">Front</button>
-            <button class="view-btn" onclick="setView('back')">Back</button>
-            <button class="view-btn" onclick="setView('side')">Side</button>
-        </div>
-
-        <!-- AR Button -->
-        <div class="ar-section">
-            <button class="btn-ar" onclick="startAR()">
-                🚀 START AR
-            </button>
-        </div>
-
-        <!-- Color Selector -->
-        <div class="color-section">
-            <div class="color-title">Select Color</div>
-            <div class="color-dots">
-                <div class="dot black selected" onclick="changeColor('black')"></div>
-                <div class="dot white" onclick="changeColor('white')"></div>
-                <div class="dot blue" onclick="changeColor('blue')"></div>
-                <div class="dot red" onclick="changeColor('red')"></div>
-            </div>
-        </div>
-
-        <!-- Specs Carousel -->
-        <div class="carousel-section">
-            <div class="carousel-container">
-                <div class="carousel slide-0" id="carousel">
-                    <div class="spec-slide">
-                        <span class="spec-highlight">200MP Camera</span>
-                        <span class="spec-normal">16GB RAM • Snapdragon 8 Elite</span>
-                    </div>
-                    <div class="spec-slide">
-                        <span class="spec-highlight">6.9" QHD+ 120Hz</span>
-                        <span class="spec-normal">Dynamic AMOLED Display</span>
-                    </div>
-                    <div class="spec-slide">
-                        <span class="spec-highlight">5000mAh 45W</span>
-                        <span class="spec-normal">Fast Charging • Wireless PowerShare</span>
-                    </div>
-                    <div class="spec-slide">
-                        <span class="spec-highlight">IP68 • S Pen</span>
-                        <span class="spec-normal">Water Resistant • 1TB Storage</span>
-                    </div>
+            
+            <div class="color-sec">
+                <div class="color-title">Select Color</div>
+                <div class="dots">
+                    <div class="dot blk sel" onclick="setColor('black')"></div>
+                    <div class="dot wht" onclick="setColor('white')"></div>
+                    <div class="dot blu" onclick="setColor('blue')"></div>
+                    <div class="dot red" onclick="setColor('red')"></div>
                 </div>
-                <div class="carousel-dots">
-                    <div class="carousel-dot active" onclick="goToSlide(0)"></div>
-                    <div class="carousel-dot" onclick="goToSlide(1)"></div>
-                    <div class="carousel-dot" onclick="goToSlide(2)"></div>
-                    <div class="carousel-dot" onclick="goToSlide(3)"></div>
+            </div>
+            
+            <div class="btns">
+                <button class="btn btn-ar" onclick="openAR()">🚀 TRY IN AR</button>
+                <button class="btn btn-buy" onclick="buyNow()">🛒 BUY NOW</button>
+            </div>
+            
+            <div class="product">
+                <div class="pname">Samsung Galaxy S25 Ultra</div>
+                <div class="price-sec">
+                    <span class="price">₹79,999</span>
+                    <span class="orig">₹89,999</span>
+                    <span class="disc">11% OFF</span>
                 </div>
-                <div class="carousel-hint">← Swipe to see more specs →</div>
             </div>
-        </div>
-
-        <!-- Product Info -->
-        <div class="product-info">
-            <div class="product-name">Samsung Galaxy S25 Ultra</div>
-            <div>
-                <span class="product-price">₹79,999</span>
-                <span class="product-original">₹89,999</span>
-                <span class="product-discount">11% OFF</span>
-            </div>
-        </div>
-
-        <!-- Buy Button -->
-        <div class="buy-section">
-            <button class="btn-buy" onclick="buyNow()">
-                🛒 BUY NOW
-            </button>
         </div>
     </div>
-
-    <!-- AR Overlay -->
+    
+    <!-- AR OVERLAY -->
     <div class="ar-overlay" id="arOverlay">
         <video class="ar-video" id="arVideo" autoplay playsinline></video>
         <button class="ar-close" onclick="closeAR()">✕</button>
-        <div class="ar-instructions">
-            Point camera at a flat surface<br>
-            Tap to place the phone
-        </div>
+        <div class="ar-msg">Point camera at flat surface</div>
     </div>
-
+    
     <script>
-        // State
-        let currentSlide = 0;
-        let currentColor = 'black';
-        let arStream = null;
-        let modelLoaded = false;
-        const totalSlides = 4;
-
-        // Initialize
-        window.onload = function() {
-            updateTime();
-            setInterval(updateTime, 1000);
-            initCarousel();
-        };
-
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            
-            const timeEl = document.getElementById('cssTime');
-            if (timeEl) timeEl.textContent = hours + ':' + minutes;
-            
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            
-            const dateEl = document.getElementById('cssDate');
-            if (dateEl) dateEl.textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
+        // CREATE GLITTER PARTICLES
+        var glitter=document.getElementById('glitter');
+        for(var i=0;i<30;i++){
+            var s=document.createElement('div');
+            s.className='star';
+            s.style.top=Math.random()*100+'%';
+            s.style.left=Math.random()*100+'%';
+            s.style.animationDelay=Math.random()*2+'s';
+            glitter.appendChild(s)
         }
-
-        // Model loaded
-        function onModelLoad() {
-            modelLoaded = true;
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('modelViewer').style.display = 'block';
-            document.getElementById('cssPhone').classList.remove('visible');
+        
+        // SHOW CONTENT AFTER SKELETON
+        setTimeout(function(){
+            document.getElementById('skeleton').style.display='none';
+            document.getElementById('content').style.display='block'
+        },200);
+        
+        // CLOCK
+        function updTime(){
+            var n=new Date();
+            var h=String(n.getHours()).padStart(2,'0');
+            var m=String(n.getMinutes()).padStart(2,'0');
+            document.getElementById('time').textContent=h+':'+m;
+            var d=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            document.getElementById('date').textContent=d[n.getDay()]+', '+mo[n.getMonth()]+' '+n.getDate()
         }
-
-        // Model error - show CSS phone
-        function onModelError() {
-            console.log('Model failed to load, showing CSS fallback');
-            modelLoaded = false;
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('modelViewer').style.display = 'none';
-            document.getElementById('cssPhone').classList.add('visible');
-        }
-
-        // Set view angle
-        function setView(view) {
-            const viewer = document.getElementById('modelViewer');
-            const btns = document.querySelectorAll('.view-btn');
-            
-            btns.forEach(btn => btn.classList.remove('active'));
-            
-            if (view === 'front') {
-                viewer.setAttribute('camera-orbit', '0deg 75deg 2.5m');
-                btns[0].classList.add('active');
-            } else if (view === 'back') {
-                viewer.setAttribute('camera-orbit', '180deg 75deg 2.5m');
-                btns[1].classList.add('active');
-            } else if (view === 'side') {
-                viewer.setAttribute('camera-orbit', '90deg 60deg 2.5m');
-                btns[2].classList.add('active');
-            }
-        }
-
-        // Change color
-        function changeColor(color) {
-            if (color === currentColor) return;
-            
-            // Update dots
-            document.querySelectorAll('.dot').forEach(dot => {
-                dot.classList.remove('selected');
-                if (dot.classList.contains(color)) {
-                    dot.classList.add('selected');
-                }
+        updTime();
+        setInterval(updTime,1000);
+        
+        // COLOR
+        function setColor(c){
+            var p=document.getElementById('phone');
+            p.className='phone '+c;
+            document.querySelectorAll('.dot').forEach(function(d){
+                d.classList.remove('sel')
             });
-            
-            // For demo, just change the CSS phone color
-            const phone = document.getElementById('cssPhone');
-            const colors = {
-                'black': 'linear-gradient(145deg, #2a2a2a, #0a0a0a)',
-                'white': 'linear-gradient(145deg, #d8d8d8, #a8a8a8)',
-                'blue': 'linear-gradient(145deg, #4a6fa5, #2a4a75)',
-                'red': 'linear-gradient(145deg, #c45c5c, #843434)'
-            };
-            phone.style.background = colors[color];
-            
-            if (navigator.vibrate) navigator.vibrate(20);
-            currentColor = color;
+            event.target.classList.add('sel');
+            if(navigator.vibrate)navigator.vibrate(20)
         }
-
-        // Carousel
-        function initCarousel() {
-            const carousel = document.getElementById('carousel');
-            let startX = 0;
-            let endX = 0;
-
-            carousel.addEventListener('touchstart', e => {
-                startX = e.touches[0].clientX;
-            });
-
-            carousel.addEventListener('touchend', e => {
-                endX = e.changedTouches[0].clientX;
-                handleSwipe();
-            });
-
-            function handleSwipe() {
-                const diff = endX - startX;
-                if (Math.abs(diff) > 50) {
-                    if (diff > 0 && currentSlide > 0) {
-                        currentSlide--;
-                    } else if (diff < 0 && currentSlide < totalSlides - 1) {
-                        currentSlide++;
-                    }
-                    updateCarousel();
-                }
+        
+        // AR
+        var ar=null;
+        async function openAR(){
+            if(navigator.vibrate)navigator.vibrate(30);
+            try{
+                ar=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+                document.getElementById('arVideo').srcObject=ar;
+                document.getElementById('arOverlay').classList.add('on')
+            }catch(e){
+                alert('Camera access denied. Enable in settings.')
             }
         }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
+        
+        function closeAR(){
+            document.getElementById('arOverlay').classList.remove('on');
+            if(ar){ar.getTracks().forEach(function(t){t.stop()});ar=null}
         }
-
-        function updateCarousel() {
-            const carousel = document.getElementById('carousel');
-            carousel.className = 'carousel slide-' + currentSlide;
-            
-            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
+        
+        function buyNow(){
+            if(navigator.vibrate)navigator.vibrate(20);
+            window.open('https://www.flipkart.com/samsung-galaxy-s25-ultra','_blank')
         }
-
-        // Start AR
-        async function startAR() {
-            if (navigator.vibrate) navigator.vibrate(30);
-            
-            const viewer = document.getElementById('modelViewer');
-            
-            // Try model-viewer AR first
-            if (modelLoaded && viewer.canActivateAR) {
-                try {
-                    await viewer.activateAR();
-                    return;
-                } catch(e) {
-                    console.log('AR activation failed:', e);
-                }
-            }
-            
-            // Fallback: open camera overlay
-            try {
-                arStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment' }
-                });
-                
-                const video = document.getElementById('arVideo');
-                video.srcObject = arStream;
-                document.getElementById('arOverlay').classList.add('active');
-            } catch(err) {
-                alert('Camera access denied. Please allow camera permission in settings.');
-            }
-        }
-
-        // Close AR
-        function closeAR() {
-            document.getElementById('arOverlay').classList.remove('active');
-            if (arStream) {
-                arStream.getTracks().forEach(track => track.stop());
-                arStream = null;
-            }
-        }
-
-        // Buy Now
-        function buyNow() {
-            if (navigator.vibrate) navigator.vibrate(20);
-            window.open('https://www.flipkart.com/samsung-galaxy-s25-ultra', '_blank');
-        }
-
-        // Auto-rotate toggle
-        let autoRotate = true;
-        document.getElementById('modelViewer').addEventListener('click', function() {
-            autoRotate = !autoRotate;
-            this.setAttribute('auto-rotate', autoRotate);
-        });
     </script>
 </body>
 </html>
