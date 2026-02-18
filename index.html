@@ -1,8 +1,579 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <title>Samsung Galaxy S25 Ultra</title>
+    <style>
+        /* RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* BODY - BLACK GRADIENT */
+        body {
+            background: linear-gradient(180deg, #000000 0%, #111111 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* CONTAINER */
+        .app {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 10px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* STATUS BAR */
+        .statusbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            font-size: 12px;
+            color: white;
+        }
+
+        /* PHONE WRAPPER */
+        .phone-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        /* PHONE */
+        .phone {
+            width: 180px;
+            height: 370px;
+            background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
+            border-radius: 30px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            border: 2px solid #333;
+        }
+
+        /* CAMERA BUMP */
+        .camera-bump {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .camera-lens {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, #0a0a1a, #000);
+            border-radius: 50%;
+            border: 2px solid #222;
+        }
+
+        .camera-lens2 {
+            position: absolute;
+            top: 8px;
+            left: 28px;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, #0a0a1a, #000);
+            border-radius: 50%;
+            border: 2px solid #222;
+        }
+
+        /* DYNAMIC ISLAND */
+        .island {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: 16px;
+            background: #000;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        /* SCREEN */
+        .screen {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            background: linear-gradient(180deg, #0a0a15, #151530);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 10px;
+        }
+
+        /* WALLPAPER EFFECTS */
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+        }
+
+        /* TIME */
+        .time {
+            font-size: 28px;
+            font-weight: 200;
+            color: white;
+            z-index: 1;
+        }
+
+        /* DATE */
+        .date {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 2px;
+            z-index: 1;
+        }
+
+        /* SPECS ON SCREEN */
+        .screen-specs {
+            margin-top: 20px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .screen-specs .highlight {
+            color: #00ff88;
+            font-size: 11px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .screen-specs .normal {
+            color: rgba(255,255,255,0.7);
+            font-size: 8px;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        /* BRAND */
+        .brand {
+            position: absolute;
+            bottom: 15px;
+            font-size: 6px;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 2px;
+            z-index: 1;
+        }
+
+        /* SIDE BUTTONS */
+        .btn-side {
+            position: absolute;
+            right: -3px;
+            width: 3px;
+            background: #333;
+            border-radius: 0 3px 3px 0;
+        }
+        .btn-vol { top: 60px; height: 25px; }
+        .btn-power { top: 95px; height: 22px; }
+
+        /* COLOR DOTS */
+        .color-section {
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .color-title {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .color-dots {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .dot.selected {
+            border-color: #00ff88;
+            transform: scale(1.2);
+        }
+
+        .dot.black { background: #1a1a1a; }
+        .dot.white { background: #d0d0d0; }
+        .dot.blue { background: #3a5a8a; }
+        .dot.red { background: #a03030; }
+
+        /* BUTTONS */
+        .buttons {
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-ar {
+            background: linear-gradient(135deg, #00cc44, #00aa33);
+            color: white;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+        }
+
+        .btn-specs {
+            background: linear-gradient(135deg, #333, #222);
+            color: white;
+            border: 1px solid #444;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        /* PRODUCT INFO */
+        .product-info {
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .product-original {
+            font-size: 14px;
+            color: #666;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .product-discount {
+            background: #e91e63;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        /* AR CAMERA OVERLAY */
+        .ar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+        }
+
+        .ar-overlay.active {
+            display: flex;
+        }
+
+        .ar-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ar-outline {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 310px;
+            border: 3px dashed #00ff88;
+            border-radius: 30px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .ar-msg {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #00ff88;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .ar-close {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* NO JS FALLBACK - Show phone immediately */
+        noscript {
+            display: block;
+            padding: 50px;
+            text-align: center;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
+    <div class="app">
+        <!-- Status Bar -->
+        <div class="statusbar">
+            <span>9:41</span>
+            <span>100% 🔋 5G</span>
+        </div>
+
+        <!-- Phone -->
+        <div class="phone-wrap">
+            <div class="phone" id="phone">
+                <!-- Camera Bump -->
+                <div class="camera-bump">
+                    <div class="camera-lens"></div>
+                    <div class="camera-lens2"></div>
+                </div>
+                
+                <!-- Dynamic Island -->
+                <div class="island"></div>
+                
+                <!-- Screen -->
+                <div class="screen">
+                    <div class="time" id="time">9:41</div>
+                    <div class="date" id="date">Monday, Jan 15</div>
+                    
+                    <!-- Screen Specs -->
+                    <div class="screen-specs">
+                        <span class="highlight">200MP Camera</span>
+                        <span class="normal">16GB RAM • Snapdragon 8 Elite</span>
+                        <span class="normal">6.9″ QHD+ 120Hz AMOLED</span>
+                        <span class="normal">5000mAh 45W Fast Charge</span>
+                        <span class="normal">8K Video • IP68 • S Pen</span>
+                    </div>
+                    
+                    <div class="brand">SAMSUNG</div>
+                </div>
+                
+                <!-- Side Buttons -->
+                <div class="btn-side btn-vol"></div>
+                <div class="btn-side btn-power"></div>
+            </div>
+        </div>
+
+        <!-- Color Selector -->
+        <div class="color-section">
+            <div class="color-title">Select Color</div>
+            <div class="color-dots">
+                <div class="dot black selected" onclick="changeColor('black')"></div>
+                <div class="dot white" onclick="changeColor('white')"></div>
+                <div class="dot blue" onclick="changeColor('blue')"></div>
+                <div class="dot red" onclick="changeColor('red')"></div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button class="btn btn-ar" onclick="openAR()">🚀 TRY IN AR</button>
+            <button class="btn btn-buy" onclick="buyNow()">🛒 BUY NOW</button>
+            <button class="btn btn-specs" onclick="viewSpecs()">📋 View All Specs</button>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+            <div class="product-name">Samsung Galaxy S25 Ultra</div>
+            <div>
+                <span class="product-price">₹79,999</span>
+                <span class="product-original">₹89,999</span>
+                <span class="product-discount">11% OFF</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- AR Camera Overlay -->
+    <div class="ar-overlay" id="arOverlay">
+        <video class="ar-video" id="arVideo" autoplay playsinline></video>
+        <div class="ar-outline"></div>
+        <div class="ar-msg">Point camera at flat surface</div>
+        <button class="ar-close" onclick="closeAR()">✕</button>
+    </div>
+
+    <script>
+        // Initialize immediately
+        window.onload = function() {
+            updateClock();
+            setInterval(updateClock, 1000);
+        };
+
+        function updateClock() {
+            var now = new Date();
+            var hours = String(now.getHours()).padStart(2, '0');
+            var minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = hours + ':' + minutes;
+            
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            document.getElementById('date').textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
+        }
+
+        function changeColor(color) {
+            // Update dots
+            var dots = document.querySelectorAll('.dot');
+            dots.forEach(function(dot) {
+                dot.classList.remove('selected');
+                if (dot.classList.contains(color)) {
+                    dot.classList.add('selected');
+                }
+            });
+            
+            // Update phone
+            var phone = document.getElementById('phone');
+            var colors = {
+                'black': 'linear-gradient(145deg, #2a2a2a, #0a0a0a)',
+                'white': 'linear-gradient(145deg, #d8d8d8, #a8a8a8)',
+                'blue': 'linear-gradient(145deg, #4a6fa5, #2a4a75)',
+                'red': 'linear-gradient(145deg, #c45c5c, #843434)'
+            };
+            phone.style.background = colors[color];
+            
+            // Vibrate
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
+        var arStream = null;
+
+        async function openAR() {
+            if (navigator.vibrate) navigator.vibrate(30);
+            
+            try {
+                arStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                
+                var video = document.getElementById('arVideo');
+                video.srcObject = arStream;
+                document.getElementById('arOverlay').classList.add('active');
+            } catch(err) {
+                alert('Camera access denied. Please allow camera permission in settings.');
+            }
+        }
+
+        function closeAR() {
+            document.getElementById('arOverlay').classList.remove('active');
+            if (arStream) {
+                arStream.getTracks().forEach(function(track) { track.stop(); });
+                arStream = null;
+            }
+        }
+
+        function buyNow() {
+            if (navigator.vibrate) navigator.vibrate(20);
+            window.open('https://www.flipkart.com/samsung-galaxy-s25-ultra', '_blank');
+        }
+
+        function viewSpecs() {
+            var specs = 'Samsung Galaxy S25 Ultra\n\n';
+            specs += '📷 200MP Camera\n';
+            specs += '💾 16GB RAM\n';
+            specs += '🔥 Snapdragon 8 Elite\n';
+            specs += '📱 6.9" QHD+ 120Hz AMOLED\n';
+            specs += '🔋 5000mAh 45W Fast Charge\n';
+            specs += '🎬 8K Video\n';
+            specs += '💧 IP68 Water Resistant\n';
+            specs += '✏️ S Pen Included\n';
+            specs += '💰 ₹79,999 (11% off)';
+            
+            alert(specs);
+        }
+    </script>
 </body>
 </html>
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                
+                arStream = stream;
+                const video = document.getElementById('arVideo');
+                video.srcObject = stream;
+                document.getElementById('arOverlay').classList.add('active');
+            } catch(err) {
+                alert('Camera access denied. Please allow camera permission in settings.');
+            }
+        }
+
+        // Close AR
+        function closeAR() {
+            document.getElementById('arOverlay').classList.remove('active');
+            if (arStream) {
+                arStream.getTracks().forEach(track => track.stop());
+                arStream = null;
+            }
+        }
+
+        // Buy Now
+        function buyNow() {
+            if (navigator.vibrate) navigator.vibrate(20);
+            window.open('https://www.flipkart.com/search?q=samsung+galaxy+s25+ultra', '_blank');
+        }
+    </script>
+</body>
+</html>
+sw
